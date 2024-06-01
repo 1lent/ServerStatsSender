@@ -1,0 +1,6 @@
+chanid: ""
+#channel id for bot make sure has perms
+token: ""
+#bot token duh
+time: 12000
+#in tics 12000 is 10 min

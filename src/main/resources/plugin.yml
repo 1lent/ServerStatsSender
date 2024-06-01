@@ -1,0 +1,6 @@
+name: TpsSender
+version: '${project.version}'
+main: com.brodi.tpssender.Main
+api-version: '1.20'
+depend:
+  - spark
