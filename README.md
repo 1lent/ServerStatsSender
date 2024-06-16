@@ -19,3 +19,10 @@ If server doesnt support measurements, mtps will not work. Most servers support!
 Default time is set to 10 mins.
 
 
+# Update v2.0
+
+- Now has access to change config to see if you want to allow the repeating of it sending to the channel, set to true or false. If false it will just be a /command: /tps
+https://gyazo.com/6308141c5745486d3bcde5cda8563047
+https://gyazo.com/1c9c508f67c92a19a725294e2b3380d8
+
+
