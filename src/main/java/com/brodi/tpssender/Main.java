@@ -19,38 +19,59 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        Boolean repeat = getConfig().getBoolean("repeat");
         int time = getConfig().getInt("time");
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            Spark spark = SparkProvider.get();
 
-            DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
-            double tpsLast10Secs = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_10);
-            double tpsLast5Mins = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_5);
-            DoubleStatistic<StatisticWindow.CpuUsage> cpuUsage = spark.cpuSystem();
-            double usagelastMin = cpuUsage.poll(StatisticWindow.CpuUsage.MINUTES_1);
 
-            GenericStatistic<DoubleAverageInfo, StatisticWindow.MillisPerTick> mspt = spark.mspt();
-            String msptstring = "";
-            if (mspt != null) {
-                DoubleAverageInfo msptLastMin = mspt.poll(StatisticWindow.MillisPerTick.MINUTES_1);
-                double msptMean = msptLastMin.mean();
-                double mspt95Percentile = msptLastMin.percentile95th();
-                msptstring = "\nMsptMean Usage: " + msptMean + "\nmspt95Percentile: " + mspt95Percentile;
-            }
+            Bukkit.getScheduler().runTaskTimer(this, () -> {
+                Spark spark = SparkProvider.get();
 
-            getConfig().options().copyDefaults();
-            saveDefaultConfig();
-            String chanid = getConfig().getString("chanid");
-            jda.getTextChannelById(chanid).sendMessage("TPS: " + tpsLast10Secs + ", " + tpsLast5Mins + "\nCPU Usage: " + usagelastMin + msptstring).queue();
-        }, 0, time);
+
+                DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
+                double tpsLast10Secs = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_10);
+                double tpsLast5Mins = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_5);
+                DoubleStatistic<StatisticWindow.CpuUsage> cpuUsage = spark.cpuSystem();
+                double usagelastMin = cpuUsage.poll(StatisticWindow.CpuUsage.MINUTES_1);
+
+                GenericStatistic<DoubleAverageInfo, StatisticWindow.MillisPerTick> mspt = spark.mspt();
+                String msptstring = "";
+
+
+                if (repeat == true) {
+                    if (mspt != null) {
+                        DoubleAverageInfo msptLastMin = mspt.poll(StatisticWindow.MillisPerTick.MINUTES_1);
+                        double msptMean = msptLastMin.mean();
+                        double mspt95Percentile = msptLastMin.percentile95th();
+                        msptstring = "\nMsptMean Usage: " + msptMean + "\nmspt95Percentile: " + mspt95Percentile;
+
+
+
+                    }
+
+                    getConfig().options().copyDefaults();
+                    saveDefaultConfig();
+                    String chanid = getConfig().getString("chanid");
+                    jda.getTextChannelById(chanid).sendMessage("TPS: " + tpsLast10Secs + ", " + tpsLast5Mins + "\nCPU Usage: " + usagelastMin + msptstring).queue();
+                }
+
+
+
+                }, 0, time);
 
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         String token = getConfig().getString("token");
         JDABuilder builder = JDABuilder.createDefault(token);
         builder.setActivity(Activity.watching("your server stats"));
+        builder.addEventListeners(new DiscordListener());
         jda = builder.build();
         System.out.println("successfully started");
+
+
 
 
 
