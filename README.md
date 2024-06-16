@@ -12,6 +12,7 @@ go to config yml put in the channel id, and bot token and restart vuala.
 
 
 should look something like this:
+
 ![image](https://github.com/1lent/TpsSender/assets/128602359/ea339167-3e44-4c50-a428-e986e43a7e93)
 
 
