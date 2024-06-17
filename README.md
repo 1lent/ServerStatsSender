@@ -1,4 +1,4 @@
-# Steps on how to use,
+# Steps on how to use
 
 Make a bot on the disocord dev portal,
 https://discordapi.com/permissions.html#8 use this <-- And put in the bots client id. Paste the link you get in the web to a discord channel. link should look like this ==>
